@@ -1,0 +1,9 @@
+{
+  "row_number": 2,
+  "Student ID": "2024S001",
+  "Student Name": "Wong Siu Ming",
+  "Email Address": "wong.siuming@email.com",
+  "Query": "What's the minimum attendance requirement for passing this course?",
+  "Classification": "COURSE_CONTENT",
+  "Response": "The attendance requirement is [x] out of 6 classes."
+}
