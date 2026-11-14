@@ -1,0 +1,22 @@
+From: Kenneth Lau (Sales Operations, APAC)
+To: Finance - Revenue Reporting
+Subject: RE: October bookings vs revenue - your questions
+Date: 4 Nov 2026
+
+Hi team,
+
+Answers to the items you sent over:
+
+1. Kowloon Bay Retail - we agreed a one-time volume rebate of HK$9,000 at signing,
+   so the invoice was HK$201,000. The CRM still shows the list price; I'll fix it.
+2. Lantau Logistics - contract was signed on 31 Oct (Singapore time) but billing
+   only raised the invoice on 3 Nov, so it will show in November revenue.
+3. Tsing Yi Marine - sorry, May marked this Closed Won too early. We are still
+   waiting for their PO; expect it mid-November.
+4. Star Ferry Services - that was a one-off consulting job billed directly by the
+   finance team. It never went through CRM.
+
+Anything else, let me know.
+Kenneth
+
+(Fictional data for teaching only.)
