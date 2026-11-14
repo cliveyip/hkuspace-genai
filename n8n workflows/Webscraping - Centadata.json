@@ -1,0 +1,292 @@
+{
+  "name": "Webscraping - Centadata",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "bcc33239-7f26-4c9e-8187-9e2ca6de855d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        192,
+        0
+      ],
+      "id": "9ebe0838-2288-43e8-8be6-133d9355db7d",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1d8bjGR3psecxBD06O8iAlI1-dxB3TZrDMFBKI3NSsPg",
+          "mode": "list",
+          "cachedResultName": "Centadata",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1d8bjGR3psecxBD06O8iAlI1-dxB3TZrDMFBKI3NSsPg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1d8bjGR3psecxBD06O8iAlI1-dxB3TZrDMFBKI3NSsPg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estate name": "={{ $json.estateName }}",
+            "address": "={{ $json.address }}",
+            "floor": "={{ $json.yAxis }}",
+            "flat": "={{ $json.xAxis }}",
+            "transaction price": "={{ $json.transactionPrice }}",
+            "gross area": "={{ $json.gArea }}",
+            "net area": "={{ $json.nArea }}",
+            "building name": "={{ $json.buildingName }}",
+            "sell or rent": "={{ $json.postType }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "estate name",
+              "displayName": "estate name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "building name",
+              "displayName": "building name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "floor",
+              "displayName": "floor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flat",
+              "displayName": "flat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sell or rent",
+              "displayName": "sell or rent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "transaction price",
+              "displayName": "transaction price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "gross area",
+              "displayName": "gross area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "net area",
+              "displayName": "net area",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        0
+      ],
+      "id": "90d5868b-3af7-4c41-b286-1fd3f4538adb",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WLCY90pcEpCvqkZY",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hk.centanet.com/findproperty/api/Transaction/Search",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json, text/plain, */*"
+            },
+            {
+              "name": "Accept-Encoding",
+              "value": "gzip, deflate, br"
+            },
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.9,zh;q=0.8,zh-TW;q=0.7"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer 744878b417df6e105c177b4570803e3985c26af1a7"
+            },
+            {
+              "name": "Cookie",
+              "value": "ANONYMOUS_ID_COOKIE=df6e105c-177b-4570-803e-3985c26af1a7; ANONYMOUS_TOKEN_COOKIE=744878b417df6e105c177b4570803e3985c26af1a7; DEEP_LINK_COOKIE=true"
+            },
+            {
+              "name": "Lang",
+              "value": "hk"
+            },
+            {
+              "name": "Origin",
+              "value": "https://hk.centanet.com"
+            },
+            {
+              "name": "Platform",
+              "value": "H5"
+            },
+            {
+              "name": "Referer",
+              "value": "https://hk.centanet.com/findproperty/list/rent/%E5%B0%96%E6%B2%99%E5%92%80_19-HMA172"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "WhatsappSource",
+              "value": "DMK-G0130"
+            },
+            {
+              "name": "currency",
+              "value": "HKD"
+            },
+            {
+              "name": "unit",
+              "value": "feet"
+            },
+            {
+              "name": "cookie",
+              "value": "ANONYMOUS_ID_COOKIE=df6e105c-177b-4570-803e-3985c26af1a7;ANONYMOUS_TOKEN_COOKIE=744878b417df6e105c177b4570803e3985c26af1a7;DEEP_LINK_COOKIE=true;"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"postType\": \"Both\",\n  \"day\": \"Day1095\",\n  \"sort\": \"InsOrRegDate\",\n  \"order\": \"Descending\",\n  \"size\": 100,\n  \"mtrs\": [],\n  \"primarySchoolNets\": [],\n  \"typeCodes\": [\n    \"19-HMA172\"\n  ],\n  \"offset\": 0\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "7d163cb2-0f69-4d7d-b059-6b7b0d9fbfe8",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7e24e2d7-9d99-410f-8f70-00bde4749c4d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b69dadcee86b795be5d9d7e7486e5ee5fd26af44e909a722992503839cba2924"
+  },
+  "id": "MBzcm1bu2hbbz47B",
+  "tags": []
+}
