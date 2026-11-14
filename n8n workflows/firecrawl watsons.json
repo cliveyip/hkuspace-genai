@@ -1,0 +1,265 @@
+{
+  "name": "firecrawl watsons",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -192
+      ],
+      "id": "e899149a-184a-4896-a28b-f49e19232875",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v2/scrape",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer fc-39fe271a4c084439ab7e0d1888d87001"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"url\": \"https://www.watsons.com.hk/zh-hk/%E5%81%A5%E5%BA%B7/%E9%9D%88%E8%8A%9D%E5%8F%8A%E8%9F%B2%E8%8D%89/c/040302\",\n  \"onlyMainContent\": false,\n  \"maxAge\": 172800000,\n  \"parsers\": [\n    \"pdf\"\n  ],\n  \"formats\": [\n    \"markdown\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        -192
+      ],
+      "id": "09a597a9-e905-4d81-a731-41b86037aec9",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a health product seller in Hong Kong.  Your task is to monitor your competitor's product price and discounts.\n\nYou are given text extracted from a competitor or a retail store's website: . {{ $json.data.markdown }} You will extract the product name, price and discount, for each product being sold.\n\nExtract ALL products from the input.\n\nFor example: \nproduct name: 老和尚 靈芝排毒茶 (5克 X 10包), \ndiscount: 買6送1\nprice: HK$249.00\n\nUse Traditional Chinese. ",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an extraction engine. Extract every product from the input. Do not summarize. Output only valid JSON. No commentary."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        -192
+      ],
+      "id": "953b9ab3-7f0f-446d-86ed-e202a8654683",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        128,
+        16
+      ],
+      "id": "22a99ca7-a75c-427f-8152-8a86b493976b",
+      "name": "Azure OpenAI Chat Model",
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "aNWWK2oElCGQLQW3",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[{\n\t\"product name\": \"老和尚 靈芝排毒茶 (5克 X 10包)\",\n\t\"discount\": \"買6送1\",\n    \"price\": 249 \n},\n{\n\t\"product name\": \"VITA GREEN 維特健靈五色靈芝 60粒\",\n\t\"discount\": \"買電子優惠卷\",\n    \"price\": 559 \n}]"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        400,
+        16
+      ],
+      "id": "10fdcc10-229b-4f33-8c16-365131186112",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -192
+      ],
+      "id": "bbcb384d-a493-4c83-930b-215ccd654573",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1o2uSt1G4ChY1LC52Wo9mebAWgt0_9B9AW8LXNYBq0Gk",
+          "mode": "list",
+          "cachedResultName": "firecrawl watsons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1o2uSt1G4ChY1LC52Wo9mebAWgt0_9B9AW8LXNYBq0Gk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1o2uSt1G4ChY1LC52Wo9mebAWgt0_9B9AW8LXNYBq0Gk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "product name": "={{ $json['product name'] }}",
+            "discount": "={{ $json.discount }}",
+            "price": "={{ $json.price }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "product name",
+              "displayName": "product name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "discount",
+              "displayName": "discount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "price",
+              "displayName": "price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        768,
+        -192
+      ],
+      "id": "aad54070-fea6-4d1e-9573-1e57d417bdde",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "WLCY90pcEpCvqkZY",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "01b27fd1-82aa-4ad0-93c3-59cd6966e2f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b69dadcee86b795be5d9d7e7486e5ee5fd26af44e909a722992503839cba2924"
+  },
+  "id": "88tpiA0ndj8zMxoz",
+  "tags": []
+}
